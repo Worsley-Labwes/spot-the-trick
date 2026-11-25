@@ -3,105 +3,287 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Forwarded Many Times: Spot the Trick</title>
+<meta name="theme-color" content="#f5f3ed">
+<title>Signal Check — Forwarded Many Times</title>
 <style>
-:root{--bg:#efeae2;--card:#fff;--ink:#1c1e21;--mute:#5f6670;--bub:#fff;--acc:#0b7a5b;--bad:#c0392b;--good:#0b7a5b;--line:#d8d2c6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1614;--card:#1a2522;--ink:#e8efec;--mute:#9aaba5;--bub:#1f2c29;--acc:#3ecf9f;--bad:#ff7b6b;--good:#3ecf9f;--line:#2c3b37}}
-:root[data-theme="dark"]{--bg:#0e1614;--card:#1a2522;--ink:#e8efec;--mute:#9aaba5;--bub:#1f2c29;--acc:#3ecf9f;--bad:#ff7b6b;--good:#3ecf9f;--line:#2c3b37}
+:root{color-scheme:light dark;--bg:#f5f3ed;--card:#fffefa;--ink:#202620;--mute:#68716a;--accent:#176b52;--accent-strong:#0d503d;--accent-soft:#e4f1e9;--line:#e4e6dc;--bubble:#fff;--warning:#f4c86a;--bad:#a43f36;--good:#176b52;--shadow:0 18px 50px rgba(39,51,39,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111a16;--card:#19251f;--ink:#edf3ed;--mute:#a5b2a8;--accent:#62c49b;--accent-strong:#8bd9b5;--accent-soft:#213a2e;--line:#2b3a31;--bubble:#1d2b23;--warning:#705b2a;--bad:#ff9a8d;--good:#70d2a7;--shadow:0 18px 50px rgba(0,0,0,.2)}}
+:root[data-theme="dark"]{--bg:#111a16;--card:#19251f;--ink:#edf3ed;--mute:#a5b2a8;--accent:#62c49b;--accent-strong:#8bd9b5;--accent-soft:#213a2e;--line:#2b3a31;--bubble:#1d2b23;--warning:#705b2a;--bad:#ff9a8d;--good:#70d2a7;--shadow:0 18px 50px rgba(0,0,0,.2)}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Times New Roman",serif}
-main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
-h1{font:800 26px/1.15 system-ui,sans-serif;margin:8px 0 6px}
-.sub,.meta,button,.tag{font-family:system-ui,sans-serif}
-.sub{color:var(--mute);margin:0 0 18px}
-.meter{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 4px}
-.meter i{display:block;height:100%;width:0;background:var(--acc);transition:width .5s}
-.meta{font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
-.card{background:var(--card);border-radius:14px;padding:16px;margin-top:16px;border:1px solid var(--line)}
-.bub{background:var(--bub);border-radius:4px 14px 14px 14px;padding:12px 14px;border:1px solid var(--line);position:relative}
-.fwd{font:italic 12px system-ui,sans-serif;color:var(--mute);margin-bottom:6px}
-.from{font:700 13px system-ui,sans-serif;color:var(--acc);margin-bottom:4px}
-.bub p{margin:0;white-space:pre-wrap}
-.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-button{flex:1;min-width:140px;padding:13px 14px;border-radius:10px;border:2px solid var(--acc);background:transparent;color:var(--ink);font-size:15px;font-weight:700;cursor:pointer}
-button.p{background:var(--acc);color:#04170f}
-button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.res{margin-top:14px}
-.verdict{font:800 17px system-ui,sans-serif}
+body{min-height:100vh;margin:0;background:radial-gradient(ellipse at 12% 8%,rgba(211,229,210,.48),transparent 30rem),radial-gradient(ellipse at 92% 38%,rgba(245,221,179,.28),transparent 26rem),var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{width:min(100% - 32px,740px);margin:0 auto;padding:28px 0 56px}
+.brandline{display:flex;align-items:center;gap:11px;margin-bottom:32px}
+.brand-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:var(--accent);color:#fff}
+.brand-icon svg{width:24px;height:24px}
+.brand-name{font-size:14px;font-weight:800;letter-spacing:.015em}
+.brand-name small{display:block;color:var(--mute);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.edition{margin-left:auto;color:var(--mute);font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+.intro{max-width:590px;margin-bottom:26px}
+.eyebrow{margin:0 0 9px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+h1{margin:0;font-size:clamp(34px,7vw,54px);font-weight:850;letter-spacing:-.055em;line-height:1.04}
+h1 em{color:var(--accent);font-style:normal}
+.sub{max-width:510px;margin:14px 0 0;color:var(--mute);font-size:16px}
+.progress-wrap{padding:16px 18px 13px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--card) 84%,transparent);box-shadow:0 6px 20px rgba(39,51,39,.035)}
+.progress-top,.progress-note{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.progress-top{font-size:13px;font-weight:750}
+.score-label{color:var(--mute);font-size:12px;font-weight:650}
+.score-label b{margin-left:5px;color:var(--accent);font-size:16px;font-weight:850}
+.score-label span{color:var(--mute)}
+.meter{height:7px;margin:11px 0 8px;overflow:hidden;border-radius:99px;background:var(--line)}
+.meter i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#176b52,#54ad7f);transition:width .45s ease}
+.progress-note{color:var(--mute);font-size:11px}
+.card{margin-top:18px;padding:clamp(17px,4vw,27px);border:1px solid var(--line);border-radius:24px;background:var(--card);box-shadow:var(--shadow)}
+.case-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.case-label,.case-number{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.case-label{display:flex;align-items:center;gap:8px;color:var(--accent)}
+.case-label i{width:8px;height:8px;border-radius:50%;background:#e5a84d;box-shadow:0 0 0 4px rgba(229,168,77,.15)}
+.case-number{color:var(--mute)}
+.bub{padding:19px;border:1px solid var(--line);border-radius:5px 19px 19px 19px;background:var(--bubble)}
+.message-meta{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.avatar{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:13px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:850}
+.from{font-size:13px;font-weight:800}
+.timestamp{color:var(--mute);font-size:11px}
+.forwarded{margin-left:auto;padding:5px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:10px;font-weight:800;white-space:nowrap}
+.message-text{margin:0;white-space:pre-wrap;font-size:clamp(16px,2.4vw,18px);line-height:1.7}
+.clue-mark{display:inline;padding:1px 2px;border:0;border-bottom:2px dashed #d79435;border-radius:3px;background:rgba(244,200,106,.2);color:inherit;font:inherit;line-height:inherit;text-align:left;cursor:pointer;transition:background .15s,border-color .15s}
+.clue-mark:hover,.clue-mark:focus-visible{background:rgba(244,200,106,.48)}
+.clue-mark.selected{border-bottom-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+button{font:inherit}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.clue-prompt{display:flex;align-items:center;gap:11px;margin:17px 2px 0;color:var(--mute);font-size:12px}
+.clue-prompt b{display:block;color:var(--ink);font-size:13px}
+.clue-icon{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--accent);font-weight:850}
+.row{display:flex;gap:11px;margin-top:19px}
+.choice{min-height:52px;flex:1;padding:12px 15px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font-size:14px;font-weight:800;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.choice:hover{transform:translateY(-2px);border-color:var(--accent);background:var(--accent-soft)}
+.choice.primary{border-color:var(--accent);background:var(--accent);color:#fff}
+.choice.primary:hover{border-color:var(--accent-strong);background:var(--accent-strong)}
+.res{margin-top:18px}
+.verdict{font-size:17px;font-weight:850}
 .ok{color:var(--good)}.no{color:var(--bad)}
-.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--line);padding:3px 9px;border-radius:99px;margin:6px 6px 0 0}
-.res ul{padding-left:20px;margin:8px 0}
-.big{font:800 44px/1 system-ui,sans-serif;color:var(--acc)}
-mark{background:rgba(255,196,0,.35);color:inherit;padding:0 2px;border-radius:3px}
+.signal-result{margin:11px 0;padding:11px 13px;border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--accent-soft);font-size:13px}
+.signal-result strong{color:var(--accent-strong)}
+.tag{display:inline-block;margin:7px 6px 0 0;padding:5px 10px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--mute);font-size:11px;font-weight:750}
+.why{margin:12px 0 0;color:var(--mute);font-size:14px}
+.res .row{margin-top:16px}
+.big{color:var(--accent);font-size:clamp(50px,12vw,76px);font-weight:900;letter-spacing:-.07em;line-height:1}
+.result-title{margin:10px 0 4px;font-size:20px;font-weight:850;letter-spacing:-.025em}
+.result-copy{margin:0;color:var(--mute)}
+.breakdown{display:flex;gap:9px;margin:17px 0 22px}
+.breakdown span{padding:8px 11px;border:1px solid var(--line);border-radius:11px;color:var(--mute);font-size:12px;font-weight:700}
+.breakdown b{color:var(--accent)}
+.result-heading{margin:24px 0 7px;font-size:17px;font-weight:850}
+.check{padding-left:23px;margin:8px 0 0}
+.check li{padding:4px 0 4px 3px;color:var(--mute)}
+.check b{color:var(--ink)}
+.check mark{padding:1px 4px;border-radius:4px;background:rgba(244,200,106,.35);color:var(--ink)}
 .hide{display:none}
-.check li{margin:6px 0}
+.copy-status{min-height:22px;margin:10px 0 0;color:var(--mute);font-size:12px}
+.disclaimer{margin:18px 4px 0;color:var(--mute);font-size:11px;text-align:center}
+.mode-switch{display:flex;gap:8px;margin:0 0 18px;padding:5px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--card) 84%,transparent)}
+.mode-tab{min-height:42px;flex:1;padding:9px 12px;border:0;border-radius:11px;background:transparent;color:var(--mute);font-size:13px;font-weight:800;cursor:pointer}
+.mode-tab[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:0 3px 9px rgba(23,107,82,.16)}
+.check-panel[hidden],.check-result[hidden]{display:none}
+.tool-intro h2{margin:0;font-size:23px;letter-spacing:-.03em}
+.tool-intro p{margin:5px 0 18px;color:var(--mute);font-size:14px}
+.form-label{display:block;margin-bottom:7px;font-size:13px;font-weight:800}
+.message-input{display:block;width:100%;min-height:132px;padding:13px 14px;border:1px solid var(--line);border-radius:13px;background:var(--bubble);color:var(--ink);font:inherit;font-size:14px;resize:vertical}
+.message-input:focus{border-color:var(--accent);outline:3px solid color-mix(in srgb,var(--accent) 18%,transparent)}
+.input-meta{display:flex;justify-content:space-between;gap:12px;margin:7px 1px 0;color:var(--mute);font-size:11px}
+.privacy-note{margin:13px 0 0;padding:11px 13px;border-radius:11px;background:var(--accent-soft);color:var(--mute);font-size:12px}
+.tool-row{display:flex;gap:10px;margin-top:14px}
+.tool-row .choice{flex:0 1 auto}
+.check-result{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.check-result h3{margin:18px 0 7px;font-size:16px}
+.search-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.search-link{display:inline-flex;align-items:center;min-height:42px;padding:9px 12px;border:1px solid var(--accent);border-radius:11px;color:var(--accent-strong);font-size:12px;font-weight:800;text-decoration:none}
+.search-link:hover{background:var(--accent-soft)}
+.steps{display:grid;gap:9px;margin:12px 0 0;padding:0;list-style:none}
+.steps li{display:flex;gap:10px;align-items:flex-start;color:var(--mute);font-size:13px}
+.step-number{display:grid;place-items:center;width:23px;height:23px;flex:0 0 23px;border:1px solid var(--line);border-radius:8px;color:var(--accent);font-size:11px;font-weight:850}
+.checklist{display:grid;gap:9px;margin-top:16px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;font-size:13px;cursor:pointer}
+.check-item input{width:17px;height:17px;flex:0 0 17px;margin:2px 0 0;accent-color:var(--accent)}
+.check-status{margin:11px 0 0;color:var(--mute);font-size:12px}
+.reply-card{margin-top:17px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.reply-card p{margin:0;color:var(--ink);font-size:14px}
+.reply-card .choice{min-height:42px;margin-top:12px;padding:8px 12px;font-size:12px}
+.reply-status{display:inline-block;margin-left:9px;color:var(--mute);font-size:11px}
+@media(max-width:520px){main{width:min(100% - 24px,740px);padding-top:19px}.brandline{margin-bottom:25px}.edition{font-size:9px}.progress-wrap{padding:13px 14px}.card{border-radius:20px}.bub{padding:15px}.row{flex-direction:column}.choice{width:100%}.breakdown{flex-wrap:wrap}}
+@media(max-width:420px){.mode-tab{padding:8px 5px;font-size:12px}.tool-row{flex-direction:column}.tool-row .choice{width:100%}.search-links{flex-direction:column}.search-link{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <main>
-<h1>Forwarded Many Times</h1>
-<p class="sub">Six messages land in your family group. Forward, or pause and verify? Every answer shows the trick behind it.</p>
-<div class="meter" aria-hidden="true"><i id="bar"></i></div>
-<div class="meta"><span id="step">Message 1 of 6</span><span>Trust-radar: <b id="score">0</b></span></div>
-
-<section id="game" class="card" aria-live="polite"></section>
-<section id="end" class="card hide"></section>
+  <div class="brandline">
+    <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.5" opacity=".8"/><path d="M12 12 19 5M15.5 5H19v3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span class="brand-name">Signal Check<small>Every share starts with a pause</small></span>
+    <span class="edition">A mini field guide</span>
+  </div>
+  <header class="intro">
+    <p class="eyebrow">Pause before you forward</p>
+    <h1>Think before you <em>share.</em></h1>
+    <p class="sub">Practice spotting manipulation, or make a plan to check a real message before you pass it on.</p>
+  </header>
+  <nav class="mode-switch" aria-label="Choose a tool">
+    <button class="mode-tab" id="practiceTab" type="button" aria-pressed="true">Practice the signals</button>
+    <button class="mode-tab" id="checkTab" type="button" aria-pressed="false">Check a message</button>
+  </nav>
+  <div id="practicePanel">
+  <div class="progress-wrap">
+    <div class="progress-top"><span id="step">Message 1 of 6</span><span class="score-label">Trust radar <b id="score">0</b><span> / 12</span></span></div>
+    <div class="meter" id="meter" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><i id="bar"></i></div>
+    <div class="progress-note"><span>Trust your instincts. Then test them.</span><span>2 points per round</span></div>
+  </div>
+  <section id="game" class="card" aria-live="polite"></section>
+  <section id="end" class="card hide" aria-live="polite"></section>
+  </div>
+  <section id="checkPanel" class="card check-panel" hidden>
+    <div class="tool-intro">
+      <p class="eyebrow">For a message you actually received</p>
+      <h2>Make a check plan</h2>
+      <p>Pick one claim to investigate. This tool helps you check it; it does not label it true or false.</p>
+    </div>
+    <form id="checker">
+      <label class="form-label" for="claim">Paste one claim or a short sentence</label>
+      <textarea class="message-input" id="claim" maxlength="500" required placeholder="Example: The county announced a water outage tomorrow."></textarea>
+      <div class="input-meta"><span>Remove names, phone numbers, and other private details.</span><span id="charCount">0 / 500</span></div>
+      <p class="privacy-note">Your text stays in this page unless you choose a search link below. Choosing a link sends the claim to Google Search. Nothing is saved by this tool.</p>
+      <div class="tool-row">
+        <button class="choice primary" type="submit">Build my check plan</button>
+        <button class="choice" type="reset">Clear</button>
+      </div>
+    </form>
+    <div id="checkResult" class="check-result" aria-live="polite" hidden></div>
+  </section>
+  <p class="disclaimer">Practice scenarios are fictional. Always check real-world alerts with an official source.</p>
 </main>
 <script>
 var M=[
-{from:"Aunty Grace (Family Group)",text:"URGENT!!! Warm water with lemon and garlic kills the virus in 10 minutes. Doctors don’t want you to know. Send to 10 people TODAY or you may lose a loved one.",ok:false,
+{from:"Aunty Grace · Family Group",text:"URGENT!!! Warm water with lemon and garlic kills the virus in 10 minutes. Doctors don’t want you to know. Send to 10 people TODAY or you may lose a loved one.",clue:"kills the virus in 10 minutes",ok:false,
 tricks:["Miracle cure","False urgency","Guilt pressure"],
 why:"Real health advice names a source you can check and never threatens you into forwarding. “Doctors hate this” is a classic hook: it makes you feel you hold a secret."},
-{from:"Cousin Brian",text:"My friend works at the power company. Total blackout tonight 11pm to 5am, whole city. Charge everything and warn everyone!",ok:false,
+{from:"Cousin Brian",text:"My friend works at the power company. Total blackout tonight 11pm to 5am, whole city. Charge everything and warn everyone!",clue:"My friend works at the power company",ok:false,
 tricks:["Friend-of-a-friend authority","Unverifiable detail"],
 why:"“Someone who works there” sounds inside-track but proves nothing. Utilities announce planned outages on their own official channels. A 10-second check settles it before you alarm 50 people."},
-{from:"Neighbourhood Group",text:"Reminder from the County Health Office: free measles vaccination at ward clinics this Saturday, 8am to 1pm. Bring your child’s clinic card. Notice also pinned at your local clinic.",ok:true,
+{from:"Neighbourhood Group",text:"Reminder from the County Health Office: free measles vaccination at ward clinics this Saturday, 8am to 1pm. Bring your child’s clinic card. Notice also pinned at your local clinic.",clue:"County Health Office",ok:true,
 tricks:["Named office","Specific, calm, checkable"],
 why:"This one earns trust: a named institution, concrete time and place, no panic, and a way to confirm it (the clinic notice). Not everything forwarded is fake. Good sharing matters too, so forward this one."},
-{from:"Unknown number",text:"SHOCKING!!! Bus company is hiding the video of what the driver did to that passenger. Share BEFORE THEY DELETE IT. Everyone must see this!",ok:false,
+{from:"Unknown number",text:"SHOCKING!!! Bus company is hiding the video of what the driver did to that passenger. Share BEFORE THEY DELETE IT. Everyone must see this!",clue:"BEFORE THEY DELETE IT",ok:false,
 tricks:["Outrage bait","“Before it’s deleted” urgency","No source"],
 why:"Anger is the fastest fuel for sharing. The message gives no video, no date, no place. Rage plus a ticking clock is designed to switch off your thinking."},
-{from:"Unknown number",text:"CONGRATULATIONS! You were selected for the Youth Empowerment Grant of KSh 50,000. To release funds pay a KSh 500 processing fee to the number below. Offer expires in 2 hours!",ok:false,
+{from:"Unknown number",text:"CONGRATULATIONS! You were selected for the Youth Empowerment Grant of KSh 50,000. To release funds pay a KSh 500 processing fee to the number below. Offer expires in 2 hours!",clue:"pay a KSh 500 processing fee",ok:false,
 tricks:["Advance-fee scam","Too good to be true","Countdown pressure"],
 why:"Real grants never ask you to pay first. Winning something you never applied for is the oldest scam pattern there is. Don’t pay, don’t reply, and warn others."},
-{from:"Work Group",text:"Experts confirm: 9 out of 10 house fires are caused by phone chargers left plugged in. Study proves it. Unplug NOW!",ok:false,
+{from:"Work Group",text:"Experts confirm: 9 out of 10 house fires are caused by phone chargers left plugged in. Study proves it. Unplug NOW!",clue:"9 out of 10 house fires",ok:false,
 tricks:["Fake statistic","“Experts” with no names","Scary certainty"],
 why:"Which experts? Which study? A precise-sounding number with no source is decoration, not evidence. Searching the claim in your own words is a quick first check."}
 ];
-var i=0,score=0,done=false;
+var i=0,score=0,answerScore=0,clueScore=0,done=false,clueFound=false;
 var g=document.getElementById("game"),end=document.getElementById("end");
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function messageWithClue(m){
+  var at=m.text.indexOf(m.clue);
+  return esc(m.text.slice(0,at))+'<button type="button" class="clue-mark" id="clue" aria-pressed="false" aria-label="Spot this message clue">'+esc(m.clue)+'</button>'+esc(m.text.slice(at+m.clue.length));
+}
 function show(){
-  done=false;var m=M[i];
-  document.getElementById("step").textContent="Message "+(i+1)+" of 6";
-  document.getElementById("bar").style.width=(i/6*100)+"%";
-  g.innerHTML='<div class="bub"><div class="fwd">↪ Forwarded many times</div><div class="from">'+esc(m.from)+'</div><p>'+esc(m.text)+'</p></div>'+
-  '<div class="row"><button id="a">↪ Forward it</button><button id="b" class="p">🔍 Pause &amp; verify</button></div><div class="res" id="res"></div>';
+  done=false;clueFound=false;var m=M[i];
+  document.getElementById("step").textContent="Message "+(i+1)+" of "+M.length;
+  document.getElementById("bar").style.width=(i/M.length*100)+"%";
+  document.getElementById("meter").setAttribute("aria-valuenow",i);
+  var initials=m.from.split(/[ ·]/).filter(Boolean).map(function(part){return part.charAt(0)}).slice(0,2).join("").toUpperCase();
+  g.innerHTML='<div class="case-heading"><span class="case-label"><i></i> Incoming message</span><span class="case-number">Case '+String(i+1).padStart(2,"0")+' / 06</span></div>'+
+  '<div class="bub"><div class="message-meta"><span class="avatar" aria-hidden="true">'+esc(initials)+'</span><div><div class="from">'+esc(m.from)+'</div><div class="timestamp">Forwarded just now</div></div><span class="forwarded">↗ Forwarded</span></div><p class="message-text">'+messageWithClue(m)+'</p></div>'+
+  '<div class="clue-prompt"><span class="clue-icon" aria-hidden="true">1</span><span><b>Find the signal</b>Tap the phrase that deserves a closer look—or earns your trust.</span></div>'+
+  '<div class="row"><button class="choice" id="a">↗ &nbsp; Forward it</button><button class="choice primary" id="b">⌕ &nbsp; Pause &amp; verify</button></div><div class="res" id="res"></div>';
+  document.getElementById("clue").onclick=function(){
+    clueFound=true;
+    this.classList.add("selected");
+    this.setAttribute("aria-pressed","true");
+  };
   document.getElementById("a").onclick=function(){pick("fwd")};
   document.getElementById("b").onclick=function(){pick("ver")};
 }
 function pick(c){
   if(done)return;done=true;var m=M[i];
   var right=(m.ok&&c==="fwd")||(!m.ok&&c==="ver");
-  if(right)score++;
+  if(right){answerScore++;score++}
+  if(clueFound){clueScore++;score++}
   document.getElementById("score").textContent=score;
-  var t=m.ok?(right?"✅ Good call. Safe to share.":"⚠️ This one was reliable. Over-doubting costs too."):(right?"✅ Nice catch.":"❌ That’s how it spreads.");
-  var tags=m.tricks.map(function(x){return '<span class="tag">'+x+'</span>'}).join("");
-  document.getElementById("res").innerHTML='<div class="verdict '+(right?"ok":"no")+'">'+t+'</div><div>'+tags+'</div><p>'+m.why+'</p><div class="row"><button class="p" id="n">'+(i<5?"Next message →":"See my result")+'</button></div>';
-  document.getElementById("n").onclick=function(){i++;i<6?show():finish()};
+  var t=m.ok?(right?"Good call. Safe to share.":"This one was reliable. Over-doubting costs too."):(right?"Nice catch.":"That’s how it spreads.");
+  var tags=m.tricks.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join("");
+  var clueText=clueFound?"Good eye—you spotted the signal: ":"The signal to notice was: ";
+  document.getElementById("res").innerHTML='<div class="verdict '+(right?"ok":"no")+'">'+(right?"✓ ":"× ")+t+'</div><p class="signal-result">'+clueText+'<strong>'+esc(m.clue)+'</strong></p><div>'+tags+'</div><p class="why">'+esc(m.why)+'</p><div class="row"><button class="choice primary" id="n">'+(i<M.length-1?"Next message →":"See my result")+'</button></div>';
+  document.getElementById("n").onclick=function(){i++;i<M.length?show():finish()};
   document.getElementById("n").focus();
 }
 function finish(){
   document.getElementById("bar").style.width="100%";
+  document.getElementById("meter").setAttribute("aria-valuenow",M.length);
   g.classList.add("hide");end.classList.remove("hide");
-  var r=score>=6?"Misinformation-proof. Teach someone this week.":score>=4?"Sharp instincts. A few tricks still sneak by.":"You’re not alone: these tricks are built to work on everyone. Try again!";
-  end.innerHTML='<div class="big">'+score+'/6</div><p><b>'+r+'</b></p><h2 style="font:800 18px system-ui,sans-serif;margin:16px 0 4px">Before you forward, ask 3 things</h2><ol class="check"><li><b>Who made this?</b> A named person or office, or nobody?</li><li><b>Can I check it?</b> Search the claim, or look at the official page or notice.</li><li><b>How does it make me feel?</b> Panic, rage or greed are the tricks’ target. <mark>Strong emotion means slow down.</mark></li></ol><div class="row"><button id="cp">📋 Copy this checklist to share</button><button class="p" id="rp">↻ Play again</button></div><p class="meta" id="cm"></p>';
-  document.getElementById("rp").onclick=function(){i=0;score=0;document.getElementById("score").textContent=0;end.classList.add("hide");g.classList.remove("hide");show()};
+  var r=score>=11?"Brilliant radar. You know when to pause—and what to look for.":score>=8?"Sharp instincts. A few signals still slipped by.":"That’s what practice is for. These tricks are built to work on everyone.";
+  end.innerHTML='<div class="big">'+score+'<span style="font-size:.38em;letter-spacing:0"> / 12</span></div><h2 class="result-title">'+r+'</h2><p class="result-copy">Every pause before a share helps slow misinformation down.</p><div class="breakdown"><span>Good calls <b>'+answerScore+' / 6</b></span><span>Signals spotted <b>'+clueScore+' / 6</b></span></div><h3 class="result-heading">Before you forward, ask 3 things</h3><ol class="check"><li><b>Who made this?</b> A named person or office, or nobody?</li><li><b>Can I check it?</b> Search the claim, or look at the official page or notice.</li><li><b>How does it make me feel?</b> Panic, rage or greed are the tricks’ target. <mark>Strong emotion means slow down.</mark></li></ol><div class="row"><button class="choice" id="cp">Copy the checklist</button><button class="choice primary" id="rp">↻ &nbsp; Play again</button></div><p class="copy-status" id="cm" role="status"></p>';
+  document.getElementById("rp").onclick=function(){i=0;score=0;answerScore=0;clueScore=0;document.getElementById("score").textContent=0;end.classList.add("hide");g.classList.remove("hide");show()};
   document.getElementById("cp").onclick=function(){
     var tx="Before you forward: 1) Who made this? 2) Can I check it? 3) How does it make me feel? Strong emotion means slow down and verify.";
-    try{navigator.clipboard.writeText(tx).then(function(){document.getElementById("cm").textContent="Copied. Paste it into your group."},function(){document.getElementById("cm").textContent=tx})}catch(e){document.getElementById("cm").textContent=tx}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(tx).then(function(){document.getElementById("cm").textContent="Copied. Paste it into your group."},function(){document.getElementById("cm").textContent=tx});
+    }else{document.getElementById("cm").textContent=tx}
   };
+}
+var practiceTab=document.getElementById("practiceTab"),checkTab=document.getElementById("checkTab");
+var practicePanel=document.getElementById("practicePanel"),checkPanel=document.getElementById("checkPanel");
+var checker=document.getElementById("checker"),claimInput=document.getElementById("claim");
+var checkResult=document.getElementById("checkResult");
+function setMode(mode){
+  var practice=mode==="practice";
+  practicePanel.hidden=!practice;
+  checkPanel.hidden=practice;
+  practiceTab.setAttribute("aria-pressed",practice?"true":"false");
+  checkTab.setAttribute("aria-pressed",practice?"false":"true");
+}
+practiceTab.onclick=function(){setMode("practice")};
+checkTab.onclick=function(){setMode("check");claimInput.focus()};
+claimInput.oninput=function(){
+  claimInput.setCustomValidity("");
+  document.getElementById("charCount").textContent=this.value.length+" / 500";
+  checkResult.hidden=true;
+};
+checker.onsubmit=function(event){
+  event.preventDefault();
+  var claim=claimInput.value.trim();
+  if(!claim){
+    claimInput.setCustomValidity("Enter a claim or short sentence to build a check plan.");
+    claimInput.reportValidity();
+    return;
+  }
+  claimInput.setCustomValidity("");
+  var encoded=encodeURIComponent('"'+claim+'"');
+  var factCheck=encodeURIComponent('"'+claim+'" fact check');
+  checkResult.innerHTML='<h3>Search the claim</h3><p class="result-copy">Compare the original wording with reliable sources. Look for an original announcement, report, or study—not just more forwards.</p><div class="search-links"><a class="search-link" href="https://www.google.com/search?q='+encoded+'" target="_blank" rel="noopener noreferrer">Search exact wording ↗</a><a class="search-link" href="https://www.google.com/search?q='+factCheck+'" target="_blank" rel="noopener noreferrer">Search with “fact check” ↗</a></div><h3>Work through these checks</h3><ol class="steps"><li><span class="step-number">1</span><span><b>Find the original source.</b> Who first made the claim? Can you find their original post, notice, or document?</span></li><li><span class="step-number">2</span><span><b>Check when and where.</b> Is the date current, and does it apply to your area?</span></li><li><span class="step-number">3</span><span><b>Look for independent confirmation.</b> Check a relevant official source or reputable reporting—not several accounts repeating the same post.</span></li><li><span class="step-number">4</span><span><b>Notice pressure.</b> Urgency, threats, requests for money, or personal details are reasons to stop and verify through a known official channel.</span></li></ol><div class="checklist"><label class="check-item"><input type="checkbox" class="checkStep"><span>I found the original source, not just a repost.</span></label><label class="check-item"><input type="checkbox" class="checkStep"><span>I checked the date and location.</span></label><label class="check-item"><input type="checkbox" class="checkStep"><span>I found an independent, relevant source.</span></label><label class="check-item"><input type="checkbox" class="checkStep"><span>I checked for pressure or requests for money or personal details.</span></label></div><p class="check-status" id="checkStatus" role="status">0 of 4 checks marked. This checklist is not proof that a claim is true.</p><div class="reply-card"><p><b>Want to pause the conversation?</b><br>“I haven’t verified this yet, so I’m holding off on forwarding it. Does anyone have the original source?”</p><button class="choice" type="button" id="copyReply">Copy a hold-off reply</button><span class="reply-status" id="replyStatus" role="status"></span></div>';
+  checkResult.hidden=false;
+  var steps=checkResult.querySelectorAll(".checkStep");
+  for(var s=0;s<steps.length;s++)steps[s].onchange=updateCheckStatus;
+  document.getElementById("copyReply").onclick=copyReply;
+};
+checker.onreset=function(){
+  checkResult.hidden=true;
+  window.setTimeout(function(){document.getElementById("charCount").textContent="0 / 500"},0);
+};
+function updateCheckStatus(){
+  var checks=checkResult.querySelectorAll(".checkStep"),count=0;
+  for(var c=0;c<checks.length;c++)if(checks[c].checked)count++;
+  var text=count===checks.length?"All four checks marked. That records your process; it does not prove the claim is true.":count+" of 4 checks marked. If you cannot confirm the source, hold off on sharing.";
+  document.getElementById("checkStatus").textContent=text;
+}
+function copyReply(){
+  var reply="I haven’t verified this yet, so I’m holding off on forwarding it. Does anyone have the original source?";
+  var status=document.getElementById("replyStatus");
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(reply).then(function(){status.textContent="Copied."},function(){status.textContent="Copy unavailable—select the reply above to copy it."});
+  }else{status.textContent="Select the reply above to copy it."}
 }
 show();
 </script>
