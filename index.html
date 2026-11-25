@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Forwarded Many Times: Spot the Trick</title>
+<style>
+:root{--bg:#efeae2;--card:#fff;--ink:#1c1e21;--mute:#5f6670;--bub:#fff;--acc:#0b7a5b;--bad:#c0392b;--good:#0b7a5b;--line:#d8d2c6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1614;--card:#1a2522;--ink:#e8efec;--mute:#9aaba5;--bub:#1f2c29;--acc:#3ecf9f;--bad:#ff7b6b;--good:#3ecf9f;--line:#2c3b37}}
+:root[data-theme="dark"]{--bg:#0e1614;--card:#1a2522;--ink:#e8efec;--mute:#9aaba5;--bub:#1f2c29;--acc:#3ecf9f;--bad:#ff7b6b;--good:#3ecf9f;--line:#2c3b37}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Times New Roman",serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
+h1{font:800 26px/1.15 system-ui,sans-serif;margin:8px 0 6px}
+.sub,.meta,button,.tag{font-family:system-ui,sans-serif}
+.sub{color:var(--mute);margin:0 0 18px}
+.meter{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 4px}
+.meter i{display:block;height:100%;width:0;background:var(--acc);transition:width .5s}
+.meta{font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-top:16px;border:1px solid var(--line)}
+.bub{background:var(--bub);border-radius:4px 14px 14px 14px;padding:12px 14px;border:1px solid var(--line);position:relative}
+.fwd{font:italic 12px system-ui,sans-serif;color:var(--mute);margin-bottom:6px}
+.from{font:700 13px system-ui,sans-serif;color:var(--acc);margin-bottom:4px}
+.bub p{margin:0;white-space:pre-wrap}
+.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+button{flex:1;min-width:140px;padding:13px 14px;border-radius:10px;border:2px solid var(--acc);background:transparent;color:var(--ink);font-size:15px;font-weight:700;cursor:pointer}
+button.p{background:var(--acc);color:#04170f}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.res{margin-top:14px}
+.verdict{font:800 17px system-ui,sans-serif}
+.ok{color:var(--good)}.no{color:var(--bad)}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--line);padding:3px 9px;border-radius:99px;margin:6px 6px 0 0}
+.res ul{padding-left:20px;margin:8px 0}
+.big{font:800 44px/1 system-ui,sans-serif;color:var(--acc)}
+mark{background:rgba(255,196,0,.35);color:inherit;padding:0 2px;border-radius:3px}
+.hide{display:none}
+.check li{margin:6px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Forwarded Many Times</h1>
+<p class="sub">Six messages land in your family group. Forward, or pause and verify? Every answer shows the trick behind it.</p>
+<div class="meter" aria-hidden="true"><i id="bar"></i></div>
+<div class="meta"><span id="step">Message 1 of 6</span><span>Trust-radar: <b id="score">0</b></span></div>
+
+<section id="game" class="card" aria-live="polite"></section>
+<section id="end" class="card hide"></section>
+</main>
+<script>
+var M=[
+{from:"Aunty Grace (Family Group)",text:"URGENT!!! Warm water with lemon and garlic kills the virus in 10 minutes. Doctors don’t want you to know. Send to 10 people TODAY or you may lose a loved one.",ok:false,
+tricks:["Miracle cure","False urgency","Guilt pressure"],
+why:"Real health advice names a source you can check and never threatens you into forwarding. “Doctors hate this” is a classic hook: it makes you feel you hold a secret."},
+{from:"Cousin Brian",text:"My friend works at the power company. Total blackout tonight 11pm to 5am, whole city. Charge everything and warn everyone!",ok:false,
+tricks:["Friend-of-a-friend authority","Unverifiable detail"],
+why:"“Someone who works there” sounds inside-track but proves nothing. Utilities announce planned outages on their own official channels. A 10-second check settles it before you alarm 50 people."},
+{from:"Neighbourhood Group",text:"Reminder from the County Health Office: free measles vaccination at ward clinics this Saturday, 8am to 1pm. Bring your child’s clinic card. Notice also pinned at your local clinic.",ok:true,
+tricks:["Named office","Specific, calm, checkable"],
+why:"This one earns trust: a named institution, concrete time and place, no panic, and a way to confirm it (the clinic notice). Not everything forwarded is fake. Good sharing matters too, so forward this one."},
+{from:"Unknown number",text:"SHOCKING!!! Bus company is hiding the video of what the driver did to that passenger. Share BEFORE THEY DELETE IT. Everyone must see this!",ok:false,
+tricks:["Outrage bait","“Before it’s deleted” urgency","No source"],
+why:"Anger is the fastest fuel for sharing. The message gives no video, no date, no place. Rage plus a ticking clock is designed to switch off your thinking."},
+{from:"Unknown number",text:"CONGRATULATIONS! You were selected for the Youth Empowerment Grant of KSh 50,000. To release funds pay a KSh 500 processing fee to the number below. Offer expires in 2 hours!",ok:false,
+tricks:["Advance-fee scam","Too good to be true","Countdown pressure"],
+why:"Real grants never ask you to pay first. Winning something you never applied for is the oldest scam pattern there is. Don’t pay, don’t reply, and warn others."},
+{from:"Work Group",text:"Experts confirm: 9 out of 10 house fires are caused by phone chargers left plugged in. Study proves it. Unplug NOW!",ok:false,
+tricks:["Fake statistic","“Experts” with no names","Scary certainty"],
+why:"Which experts? Which study? A precise-sounding number with no source is decoration, not evidence. Searching the claim in your own words is a quick first check."}
+];
+var i=0,score=0,done=false;
+var g=document.getElementById("game"),end=document.getElementById("end");
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function show(){
+  done=false;var m=M[i];
+  document.getElementById("step").textContent="Message "+(i+1)+" of 6";
+  document.getElementById("bar").style.width=(i/6*100)+"%";
+  g.innerHTML='<div class="bub"><div class="fwd">↪ Forwarded many times</div><div class="from">'+esc(m.from)+'</div><p>'+esc(m.text)+'</p></div>'+
+  '<div class="row"><button id="a">↪ Forward it</button><button id="b" class="p">🔍 Pause &amp; verify</button></div><div class="res" id="res"></div>';
+  document.getElementById("a").onclick=function(){pick("fwd")};
+  document.getElementById("b").onclick=function(){pick("ver")};
+}
+function pick(c){
+  if(done)return;done=true;var m=M[i];
+  var right=(m.ok&&c==="fwd")||(!m.ok&&c==="ver");
+  if(right)score++;
+  document.getElementById("score").textContent=score;
+  var t=m.ok?(right?"✅ Good call. Safe to share.":"⚠️ This one was reliable. Over-doubting costs too."):(right?"✅ Nice catch.":"❌ That’s how it spreads.");
+  var tags=m.tricks.map(function(x){return '<span class="tag">'+x+'</span>'}).join("");
+  document.getElementById("res").innerHTML='<div class="verdict '+(right?"ok":"no")+'">'+t+'</div><div>'+tags+'</div><p>'+m.why+'</p><div class="row"><button class="p" id="n">'+(i<5?"Next message →":"See my result")+'</button></div>';
+  document.getElementById("n").onclick=function(){i++;i<6?show():finish()};
+  document.getElementById("n").focus();
+}
+function finish(){
+  document.getElementById("bar").style.width="100%";
+  g.classList.add("hide");end.classList.remove("hide");
+  var r=score>=6?"Misinformation-proof. Teach someone this week.":score>=4?"Sharp instincts. A few tricks still sneak by.":"You’re not alone: these tricks are built to work on everyone. Try again!";
+  end.innerHTML='<div class="big">'+score+'/6</div><p><b>'+r+'</b></p><h2 style="font:800 18px system-ui,sans-serif;margin:16px 0 4px">Before you forward, ask 3 things</h2><ol class="check"><li><b>Who made this?</b> A named person or office, or nobody?</li><li><b>Can I check it?</b> Search the claim, or look at the official page or notice.</li><li><b>How does it make me feel?</b> Panic, rage or greed are the tricks’ target. <mark>Strong emotion means slow down.</mark></li></ol><div class="row"><button id="cp">📋 Copy this checklist to share</button><button class="p" id="rp">↻ Play again</button></div><p class="meta" id="cm"></p>';
+  document.getElementById("rp").onclick=function(){i=0;score=0;document.getElementById("score").textContent=0;end.classList.add("hide");g.classList.remove("hide");show()};
+  document.getElementById("cp").onclick=function(){
+    var tx="Before you forward: 1) Who made this? 2) Can I check it? 3) How does it make me feel? Strong emotion means slow down and verify.";
+    try{navigator.clipboard.writeText(tx).then(function(){document.getElementById("cm").textContent="Copied. Paste it into your group."},function(){document.getElementById("cm").textContent=tx})}catch(e){document.getElementById("cm").textContent=tx}
+  };
+}
+show();
+</script>
+</body>
+</html>
